@@ -25,7 +25,7 @@ jobs:
           node-version: '18' # Or any LTS version compatible with docsify-cli
 
       - name: Install docsify-cli
-        run: npm install -g docsify-cli
+        run: npm install -g docsify-cli@latest # Ensure the latest version is installed
 
       - name: Generate sidebar
         # This command targets your 'docs' directory.
