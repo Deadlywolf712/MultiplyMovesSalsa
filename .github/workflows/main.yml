@@ -1,30 +1,48 @@
-name: Regenerate Sidebar
-on: [push]
+name: Generate Docs Sidebar (using docsify-cli)
+
+on:
+  push:
+    branches:
+      - main # Or your primary branch if different (e.g., master)
+    paths:
+      - 'docs/**'         # Trigger on any change within the docs folder
+      - '!docs/_sidebar.md' # IMPORTANT: Prevent loop if action commits this file
+  workflow_dispatch: # Allows manual triggering from the Actions tab
+
 jobs:
-  Explore-GitHub-Actions:
+  generate-sidebar:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to commit changes back to the repository
+
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: Generate index readme
-        uses: actions/setup-node@v3
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 14
-      - run: |
-           npm -g install docsify
-           npm -g docsify-tools
-           npm -g install docsify-cli
-           docsify generate .
-           mv _sidebar.md README.md
-           git add README.md
-           git commit -m "index file by github actions"
-           git push origin docs
-      - name: List files in the repository
+          node-version: '18' # Or any LTS version compatible with docsify-cli
+
+      - name: Install docsify-cli
+        run: npm install -g docsify-cli
+
+      - name: Generate sidebar
+        # This command targets your 'docs' directory.
+        # --sidebar _sidebar.md ensures it generates/updates docs/_sidebar.md
+        # --overwrite allows it to update an existing file.
+        run: docsify generate ./docs --sidebar _sidebar.md --overwrite
+
+      - name: Commit and push if sidebar changed
         run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          # Stage the potentially changed sidebar
+          git add docs/_sidebar.md
+          # Check if there are staged changes for the sidebar
+          if ! git diff --staged --quiet docs/_sidebar.md; then
+            git commit -m "docs: auto-generate sidebar via docsify-cli [skip ci]"
+            git push
+          else
+            echo "No changes to docs/_sidebar.md, nothing to commit."
+          fi
