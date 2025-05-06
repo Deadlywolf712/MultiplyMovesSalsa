@@ -3,58 +3,45 @@ name: Generate Docs Sidebar (using docsify-cli)
 on:
   push:
     branches:
-      - main # Or your primary branch if different (e.g., master)
+      - main
     paths:
-      - 'docs/**'         # Trigger on any change within the docs folder
-      - '!docs/_sidebar.md' # IMPORTANT: Prevent loop if action commits this file
-  workflow_dispatch: # Allows manual triggering from the Actions tab
+      - 'docs/**'        # run when ANY file in docs/ changes …
+      - '!docs/_sidebar.md'   # … except when only _sidebar.md changes
+  workflow_dispatch:      # allow manual runs
 
 jobs:
   generate-sidebar:
     runs-on: ubuntu-latest
+
     permissions:
-      contents: write # Required to commit changes back to the repository
+      contents: write     # we are going to git-push
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # ←-- we are going to push back to the same branch
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18' # Or any LTS version compatible with docsify-cli
+          node-version: 18
 
-      - name: Install docsify-cli LOCALLY
-        # This installs docsify-cli@latest into the local node_modules directory (NO -g FLAG)
-        run: npm install docsify-cli@latest
+      - name: Install docsify-cli locally
+        run: npm i docsify-cli@latest
 
-      - name: Verify version of LOCALLY installed docsify-cli (using npx)
-        # npx should pick up ./node_modules/.bin/docsify
-        # This step will show us which version is being detected.
-        # It should be 4.4.0 or higher for --overwrite or -o to be supported.
-        run: npx docsify --version
+      - name: Generate sidebar
+        # This command is FIXED in point 2 below.
+        run: npx docsify-sidebar-generator -d docs -o docs/_sidebar.md
 
-      - name: Show help for 'generate' command (using npx)
-        # This step will show us if the detected docsify version lists --overwrite / -o as an option.
-        # THIS IS CRUCIAL.
-        run: npx docsify generate --help
-
-      - name: Generate sidebar (using npx with locally installed docsify-cli)
-        # npx will find and use the docsify-cli installed in node_modules/.bin
-        # Using the shorthand -o as per your suggestion and the documentation.
-        # You can also try --overwrite here if -o fails, but the help output above will guide us.
-        run: npx docsify generate ./docs --sidebar _sidebar.md -o
-
-      - name: Commit and push if sidebar changed
+      - name: Commit & push sidebar (if it changed)
         run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          # Stage the potentially changed sidebar
-          git add docs/_sidebar.md
-          # Check if there are staged changes for the sidebar
-          if ! git diff --staged --quiet docs/_sidebar.md; then
-            git commit -m "docs: auto-generate sidebar via docsify-cli [skip ci]"
+          if ! git diff --quiet docs/_sidebar.md ; then
+            git config user.name  "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add docs/_sidebar.md
+            git commit -m "docs: auto-generate sidebar [skip ci]"
             git push
           else
-            echo "No changes to docs/_sidebar.md, nothing to commit."
+            echo "Nothing changed – skip commit."
           fi
