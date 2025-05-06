@@ -16,6 +16,8 @@ jobs:
         with:
           node-version: 14
       - run: |
+           npm -g install docsify
+           npm -g docsify-tools
            npm -g install docsify-cli
            docsify generate .
            mv _sidebar.md README.md
