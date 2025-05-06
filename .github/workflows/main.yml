@@ -31,18 +31,19 @@ jobs:
       - name: Verify version of LOCALLY installed docsify-cli (using npx)
         # npx should pick up ./node_modules/.bin/docsify
         # This step will show us which version is being detected.
-        # It should be 4.4.0 or higher for --overwrite to be supported.
+        # It should be 4.4.0 or higher for --overwrite or -o to be supported.
         run: npx docsify --version
 
       - name: Show help for 'generate' command (using npx)
-        # This step will show us if the detected docsify version lists --overwrite as an option.
+        # This step will show us if the detected docsify version lists --overwrite / -o as an option.
         # THIS IS CRUCIAL.
         run: npx docsify generate --help
 
       - name: Generate sidebar (using npx with locally installed docsify-cli)
         # npx will find and use the docsify-cli installed in node_modules/.bin
-        # We are putting --overwrite back as requested.
-        run: npx docsify generate ./docs --sidebar _sidebar.md --overwrite
+        # Using the shorthand -o as per your suggestion and the documentation.
+        # You can also try --overwrite here if -o fails, but the help output above will guide us.
+        run: npx docsify generate ./docs --sidebar _sidebar.md -o
 
       - name: Commit and push if sidebar changed
         run: |
