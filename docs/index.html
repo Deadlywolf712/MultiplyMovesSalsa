@@ -411,15 +411,11 @@
         }
 
       ],
-      // MathJax Configuration
-      mathjax: {
-        tex: {
-          inlineMath: [['$', '$'], ['\\(', '\\)']],
-          displayMath: [['$$', '$$'], ['\\[', '\\]']]
-        },
-        options: {
-          skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
-        }
+      // docsify-latex Configuration (using MathJax V3)
+      latex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$']],
+        // customOptions: {} // Optional, if you have specific MathJax options
       }
     }
 
@@ -488,10 +484,10 @@
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-swift.min.js"></script>
 
-  <!-- MathJax Core -->
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-  <!-- Docsify MathJax Plugin -->
-  <script src="//cdn.jsdelivr.net/npm/docsify-mathjax@latest/dist/docsify-mathjax.js"></script>
+  <!-- MathJax V3 Core (as per docsify-latex docs) -->
+  <script src="//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <!-- docsify-latex Plugin -->
+  <script src="//cdn.jsdelivr.net/npm/docsify-latex@0"></script>
 
 </body>
 
