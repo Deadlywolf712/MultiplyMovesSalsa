@@ -1,8 +1,8 @@
 <!-- AUTO-GENERATED-SIDEBAR-START -->
 - [Introduction](introduction.md)
-- [SALSA_NOTES_TEST_TEST](SALSA_NOTES_TEST_TEST.md)
+- [SALSA NOTES TEST TEST](SALSA-NOTES-TEST-TEST.md)
 - [Standalone Page](standalone-page.md)
-- [Test_Test](Test_Test.md)
+- [Test Test](Test-Test.md)
 - [Topic One](topic-one.md)
 - [Topic Three Overview](topic-three-overview.md)
 - [Topic Three Subtopic One](topic-three-subtopic-one.md)
