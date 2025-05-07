@@ -1,0 +1,66 @@
+name: Diagnose and Generate Docs Sidebar
+
+on:
+  push:
+    branches:
+      - main # Or your primary branch if different (e.g., master)
+    paths:
+      - 'docs/**'
+      - '!docs/_sidebar.md'
+  workflow_dispatch:
+
+jobs:
+  generate-sidebar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm' # Enable npm caching for potentially faster installs on reruns
+
+      - name: Clean npm cache (just in case)
+        run: npm cache clean --force
+
+      - name: Install docsify-cli@latest LOCALLY
+        run: npm install docsify-cli@latest
+        # This installs into ./node_modules
+
+      - name: List contents of node_modules/.bin
+        run: ls -la ./node_modules/.bin/
+        # This will show us if 'docsify' executable is present locally.
+
+      - name: 1. CRITICAL DIAGNOSTIC: Get version from LOCAL docsify
+        run: ./node_modules/.bin/docsify --version
+        # We need to see what version this reports. It should be 4.4.0 or higher
+        # for --overwrite to be supported as per general docsify-cli history.
+
+      - name: 2. CRITICAL DIAGNOSTIC: Get help output from LOCAL docsify generate command
+        run: ./node_modules/.bin/docsify generate --help
+        # THE OUTPUT OF THIS COMMAND IS THE MOST IMPORTANT.
+        # We need to see if '--overwrite' or '-o' is listed as an option
+        # by THE EXACT VERSION OF DOCSIFY WE JUST INSTALLED AND ARE ABOUT TO RUN.
+
+      - name: Attempt to Generate sidebar with --overwrite (using LOCAL docsify)
+        # We will use the command directly from its local path.
+        # Based on the documentation you last showed, --overwrite SHOULD be valid
+        # if the version installed is recent enough.
+        run: ./node_modules/.bin/docsify generate ./docs --sidebar _sidebar.md --overwrite
+
+      - name: Commit and push if sidebar changed
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add docs/_sidebar.md
+          if ! git diff --staged --quiet docs/_sidebar.md; then
+            git commit -m "docs: auto-generate sidebar via docsify-cli [skip ci]"
+            git push
+          else
+            echo "No changes to docs/_sidebar.md, nothing to commit."
+          fi
