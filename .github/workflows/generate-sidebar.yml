@@ -1,0 +1,40 @@
+name: Generate Docsify Sidebar
+
+on:
+  push:
+    branches:
+      - main # Adjust if your main branch is named differently (e.g., master)
+    paths:
+      - 'docs/**.md'
+      - 'docs/**/' # To trigger on new/renamed folder creation/deletion
+      - '!docs/_sidebar.md' # Don't trigger if only _sidebar.md changes (to avoid loops if action commits it)
+      - '.github/scripts/generate-sidebar.js'
+      - '.github/workflows/generate-sidebar.yml'
+  workflow_dispatch: # Allows manual triggering from the Actions tab
+
+jobs:
+  build-sidebar:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to commit changes back to the repository
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Using a recent LTS version
+
+      - name: Generate Sidebar
+        run: node .github/scripts/generate-sidebar.js
+
+      - name: Commit and Push if Changed
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add docs/_sidebar.md
+          # Check if there are staged changes for _sidebar.md
+          # If there are, commit and push. If not, do nothing to avoid empty commits.
+          git diff --quiet --staged docs/_sidebar.md || (git commit -m "docs: auto-generate sidebar" && git push)
