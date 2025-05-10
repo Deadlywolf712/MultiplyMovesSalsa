@@ -1,14 +1,9 @@
 <!-- AUTO-GENERATED-SIDEBAR-START -->
-- [Introduction](introduction.md)
-- [SALSA NOTES TEST TEST](SALSA-NOTES-TEST-TEST.md)
+- [1.Getting Started](1.Getting-Started.md)
+- [2.Daily Practice](2.Daily-Practice.md)
+- [3.Week 1 Rotations Sharing An Axis](3.Week-1-Rotations-Sharing-an-Axis.md)
+- [4.Week 2 Back To Back Salsa](4.Week-2-Back-to-Back-Salsa.md)
 - [Standalone Page](standalone-page.md)
-- [Test Test Copy](Test-Test-Copy.md)
-- [Test Test](Test-Test.md)
-- [Topic One](topic-one.md)
-- [Topic Three Overview](topic-three-overview.md)
-- [Topic Three Subtopic One](topic-three-subtopic-one.md)
-- [Topic Three Subtopic Two](topic-three-subtopic-two.md)
-- [Topic Two](topic-two.md)
 <!-- AUTO-GENERATED-SIDEBAR-END -->
 
 **PROJECT INFO**  
