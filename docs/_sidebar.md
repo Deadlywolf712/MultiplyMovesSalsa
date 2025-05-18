@@ -3,6 +3,7 @@
 - [2.Daily Practice](2.Daily-Practice.md)
 - [3.Week 1 Rotations Sharing An Axis](3.Week-1-Rotations-Sharing-an-Axis.md)
 - [4.Week 2 Back To Back Salsa](4.Week-2-Back-to-Back-Salsa.md)
+- [5.Direction Changes](5.Direction-Changes.md)
 - [Standalone Page](standalone-page.md)
 <!-- AUTO-GENERATED-SIDEBAR-END -->
 
