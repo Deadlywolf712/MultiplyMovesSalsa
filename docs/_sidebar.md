@@ -3,7 +3,11 @@
 - [2.Daily Practice](2.Daily-Practice.md)
 - [3.Week 1 Rotations Sharing An Axis](3.Week-1-Rotations-Sharing-an-Axis.md)
 - [4.Week 2 Back To Back Salsa](4.Week-2-Back-to-Back-Salsa.md)
-- [5.Direction Changes](5.Direction-Changes.md)
+- [5.Week 3 Direction Changes](5.Week-3-Direction-Changes.md)
+- [6.Week 4 Locks And Drops](6.Week-4-Locks-and-Drops.md)
+- [7.Week 5 Hand Tosses](7.Week-5-Hand-Tosses.md)
+- [8.Week 6 Bringing It All Together](8.Week-6-Bringing-It-All-Together.md)
+- [9.Wrap Up Where Do We Go From Here](9.Wrap-Up-Where-Do-We-Go-From-Here.md)
 - [Standalone Page](standalone-page.md)
 <!-- AUTO-GENERATED-SIDEBAR-END -->
 
